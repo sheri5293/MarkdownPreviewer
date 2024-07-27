@@ -2,46 +2,55 @@
 import React, { useState, useEffect } from "react";
 import { marked } from "marked";
 
-marked.setOptions({
-  gfm: true,
-  breaks: true,
-});
 const MarkdownPreviewer = () => {
-  const firstMarkdown = `# Heading 1
-## Heading 2
-[Link](https://www.sapBytes.com)
-\`Inline code\`
+  const firstMarkdown = `
+# Welcome to my React Markdown Previewer!
+
+## This is a sub-heading...
+### And here's some other cool stuff:
+
+Heres some code, \`<div></div>\`, between 2 backticks.
 
 \`\`\`
-Code block
+// this is multi-line code:
+
+function anotherExample(firstLine, lastLine) {
+  if (firstLine == '\`\`\`' && lastLine == '\`\`\`') {
+    return multiLineCode;
+  }
+}
 \`\`\`
 
-- List item
+You can also make text **bold**... whoa!
+Or _italic_.
+Or... **_both!_**
 
-> Blockquote
+There's also [links](https://www.freecodecamp.com), and
+> Block Quotes!
 
-![Image](https://via.placeholder.com/150)
+![React Logo w/ Text](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png)
 
-**Bold text**
+- And of course there are lists.
+  - Some are bulleted.
+      - With different indentation levels.
+        - That look like this.
 `;
   const [markdown, setMarkdown] = useState(firstMarkdown);
-  useEffect(() => {
-    marked.setOptions({
-      gfm: true,
-      breaks: true,
-    });
-  }, []);
-  const handleChange = (e) => {
-    setMarkdown(e.target.value);
+  const getMarkdownText = (markdown) => {
+    return { __html: marked(markdown) };
   };
-
   return (
-    <div className="container">
-      <textarea id="editor" value={markdown} onChange={handleChange} />
-      <div
-        id="preview"
-        dangerouslySetInnerHTML={{ __html: marked(markdown) }}
-      />
+    <div>
+      <h1 style={{ textAlign: "center" }}>Markdown Previewer</h1>
+      <div className="boxes-container">
+        <textarea
+          name="editor"
+          id="editor"
+          value={markdown}
+          onChange={(e) => setMarkdown(e.target.value)}
+        ></textarea>
+        <div id="preview" dangerouslySetInnerHTML={getMarkdownText(markdown)} />
+      </div>
     </div>
   );
 };
